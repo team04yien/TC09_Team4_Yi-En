@@ -4,25 +4,25 @@
 # Class number = TC09 
 
 
-# from pathlib import Path
-# import csv 
+from pathlib import Path
+import csv 
 
-# def analyze_cash_on_hand(filePaths) 
-# #combine the data from all the 3 CSV files for cash on hand 
-# total_cash_on_hand = 
+def analyze_cash_on_hand(filePaths) 
+#combine the data from all the 3 CSV files for cash on hand 
+total_cash_on_hand = 
 
-# # Paths to the CSV files
-# file_paths = [
-#     '/path/to/first/csv',
-#     '/path/to/second/csv',
-#     '/path/to/third/csv'
-# ]
+# Paths to the CSV files
+file_paths = [
+    '/path/to/first/csv',
+    '/path/to/second/csv',
+    '/path/to/third/csv'
+]
 
-# information = [] #create an empty list to append 
-# for filePath in filePaths:
-#     with open(file_path, mode='r') as file:
-#         csv_reader = csv.DictReader(file)
-#         data.append(list(csv_reader)) 
+information = [] #create an empty list to append 
+for filePath in filePaths:
+    with open(file_path, mode='r') as file:
+        csv_reader = csv.DictReader(file)
+        data.append(list(csv_reader)) 
 
 from pathlib import Path
 import csv
