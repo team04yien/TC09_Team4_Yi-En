@@ -38,4 +38,4 @@ for category, overhead in total_overheads.items():  # to access the key and valu
         highest_overhead_amount = overhead
 
 # Print category with highest overhead
-print(f"The category with the highest overhead is '{highest_overhead_category}'and a total overhead amount of ${highest_overhead_amount:.2f}.") 
+print(f"Category with the highest overhead is '{highest_overhead_category}' with Total overhead amount of ${highest_overhead_amount:.2f}.") 
