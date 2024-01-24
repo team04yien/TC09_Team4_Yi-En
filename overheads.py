@@ -10,7 +10,6 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
     reader = csv.reader(file)
     next(reader) # skip header
 
-
 # Go through variables to track the category with the highest overhead
     highest_overhead_amount = -1 # to ensure that all overhead amount get runs through as all is bigger than -1
 
