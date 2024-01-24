@@ -26,6 +26,16 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
         else:
             #else, create a new overhead
             total_overheads[category] = overhead 
-        
-print (total_overheads)
-  
+
+# Go through variables to track the category with the highest overhead
+highest_overhead_amount = -1 # to ensure that all overhead amount get runs through as all is bigger than -1
+
+# Go through total_overheads dictionary
+for category, overhead in total_overheads.items():  # to access the key and value in the dictionary at the same time  
+    # Check if overhead is greater than the highest recorded overhead
+    if overhead > highest_overhead_amount:
+        highest_overhead_category = category
+        highest_overhead_amount = overhead
+
+# Print category with highest overhead
+print(f"The category with the highest overhead is '{highest_overhead_category}'and a total overhead amount of ${highest_overhead_amount:.2f}.") 
