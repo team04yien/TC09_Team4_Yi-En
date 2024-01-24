@@ -21,21 +21,11 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
 
 # sum up overheads by category 
         if category in total_overheads:
-            total_overheads[category] += overhead
+            # if category is in total_overheads, add overhead into existing amount 
+            total_overheads[category] += overhead 
         else:
+            #else, create a new overhead
             total_overheads[category] = overhead 
         
-
-
-print (f"")
-        
- 
- 
-    # # create an empty list for overheads record
-    # overheadsRecords = [] 
-
-    # # append overhead record into the overheadRecords list
-    # for row in reader:
-    #     category = row[0]
-    #     overhead = float(row[1])  # Convert overhead to float for numerical operations
-    #     overheadsRecords.append([category, overhead])    
+print (total_overheads)
+  
