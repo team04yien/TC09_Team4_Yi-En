@@ -10,6 +10,9 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
     reader = csv.reader(file)
     next(reader) # skip header
 
+# create a dictionary for total overheads 
+    total_overheads = {} 
+
 # Go through the rows, 
     for row in reader: 
         # name the according rows
@@ -20,7 +23,11 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
         total_overheads = float({}) #float everything in the dictionary 
 
 # sum up overheads by category 
+        total_overheads[category] += overhead 
         
+
+
+print (f"")
         
  
  
