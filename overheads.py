@@ -19,11 +19,11 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
         category = row[0] 
         overhead = float(row[1]) #float it as we need numberic operation 
 
-# create a dictionary for total overheads
-        total_overheads = float({}) #float everything in the dictionary 
-
 # sum up overheads by category 
-        total_overheads[category] += overhead 
+        if category in total_overheads:
+            total_overheads[category] += overhead
+        else:
+            total_overheads[category] = overhead 
         
 
 
