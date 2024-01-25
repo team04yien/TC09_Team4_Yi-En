@@ -22,7 +22,7 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
         current_cash = cash_on_hand
         difference = current_cash - pervious_cash  
         print (difference)
-
+o
 
 
 # # Initial first day to make it $0 
