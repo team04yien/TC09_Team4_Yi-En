@@ -5,6 +5,9 @@ import csv
 fp = Path.cwd()/"csv_reports"/"Cash_on_Hand.csv"
 print(fp.exists())
 
+# Create an empty list for deficits to append later 
+deficits = []  
+
 # read the csv file 
 with fp.open(mode="r", encoding="UTF-8", newline="") as file:
     reader = csv.reader(file)
@@ -21,11 +24,10 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
         cash_on_hand = float(row[1]) #float it as we need numberic operation
         current_cash = cash_on_hand
         difference = current_cash - pervious_cash  
-        print (difference)
-o
+        # print (difference)
 
-
-# # Initial first day to make it $0 
-# pervious_cash_amount = row[0] 
-# current_cash_amount = float(row[1]) 
-# difference = current_cash_amount - pervious_cash_amount 
+# checking for deficits 
+        if difference >  0:
+            # Record the deficit (store the day and the absolute value of the deficit)
+            deficits.append([day, abs(difference)]) 
+            print (deficits)
