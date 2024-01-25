@@ -15,7 +15,7 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
 
     # Read the first data row to initialize previous_cash
     first_data_row = next(reader) 
-    pervious_cash = float(first_data_row[1])
+    previous_cash = float(first_data_row[1])
 
 # Go through the rows, 
     for row in reader: 
@@ -23,11 +23,12 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
         day = row[0] 
         cash_on_hand = float(row[1]) #float it as we need numberic operation
         current_cash = cash_on_hand
-        difference = current_cash - pervious_cash  
-        # print (difference)
+        difference = current_cash - previous_cash 
+        # current cash 
+        print (difference)
 
-# checking for deficits 
-        if difference >  0:
-            # Record the deficit (store the day and the absolute value of the deficit)
-            deficits.append([day, abs(difference)]) 
-            print (deficits)
+# # checking for deficits 
+#         if difference <  0:
+#             # Record the deficit (store the day and the absolute value of the deficit)
+#             deficits.append([day, difference]) 
+#             print (deficits)
