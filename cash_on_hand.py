@@ -24,7 +24,7 @@ with fp.open(mode="r", encoding="UTF-8", newline="") as file:
         cash_on_hand = float(row[1]) #float it as we need numberic operation
         current_cash = cash_on_hand
         difference = current_cash - previous_cash 
-        # current cash 
+        previous_cash = current_cash # the pervious cash was initially set as the first collum, reset it after running every rounds of loops, that current cash becomes pervious cash  
         print (difference)
 
 # # checking for deficits 
