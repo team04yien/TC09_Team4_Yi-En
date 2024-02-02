@@ -8,8 +8,9 @@ def main():
     No parameter needed
     """
     overheads.overhead_function()
-    profit_loss.profit_loss_function()
     cash_on_hand.cash_on_hand_function()
+    profit_loss.profit_loss_function()
+    
 main()
 
 
