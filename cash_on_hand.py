@@ -1,34 +1,132 @@
 from pathlib import Path
 import csv
 
-# create a file path to csv file.
-fp = Path.cwd()/"csv_reports"/"Cash_on_Hand.csv"
-print(fp.exists())
+def check_list(list):
+# function to loop through each item in list 
+# to tell the overall trend in the series of cash_on_hand difference,
+# inside this list, it can be either, always increasing, alwalys decreasing or fluctuating 
+    """
+    This function identifies the trend of the data set which can be increasing, decreasing or fluctuating
+    One parameter required: A list where each inner list contains the day and the cash on hand difference for that day.
 
-# Create an empty list for deficits to append later 
-deficits = []  
+    """
+    positive = 0 #Initialise positive and negative as 0
+    negative = 0  
+    for nested in list:  # nested is the elements in list 
+        if nested[-1] > 0: # if the last element of the list is greater than 0, then is positive  
+            positive += 1  # positive = 1  
+        elif nested[-1] < 0:
+            negative += 1  # count the total number of occurance 
+    if positive and not negative:
+        return "always increasing" 
+    elif not positive and negative:
+        return "always decreasing" 
+    elif positive and negative:
+        return "fluctuating"
+    
+def always_positive(list):
+    """
+    This function identifies the day and amount of the highest increase in cash on hand, when the trend is always increasing
+    One parameter required: A list where each inner list contains the day and the cash on hand difference for that day.
 
-# read the csv file 
-with fp.open(mode="r", encoding="UTF-8", newline="") as file:
-    reader = csv.reader(file)
-    next(reader) # skip header
+    """
+    highest = 0     # set variable to zero 
+    day = 0         # to rmb the day on which the highest value occurs 
+    for nested in list:
+        if nested[-1] > highest:  # going down the list to find the highest value, if the value is higher than the highest, then it will be replaced to be the highest 
+            highest = nested[-1]
+            day = nested[0] # updates the day of the highest 
+    return [day, highest] 
 
-    # Read the first data row to initialize previous_cash
-    first_data_row = next(reader) 
-    previous_cash = float(first_data_row[1])
+def always_negative(list):
+    """
+    This function identifies the day and amount of the highest decrease in cash on hand, when the trend is always decreasing
+    One parameter required: A list where each inner list contains the day and the cash on hand difference for that day.
 
-# Go through the rows, 
-    for row in reader: 
-        # name the according rows
-        day = row[0] 
-        cash_on_hand = float(row[1]) #float it as we need numberic operation
-        current_cash = cash_on_hand
-        difference = current_cash - previous_cash 
-        previous_cash = current_cash # the pervious cash was initially set as the first collum, reset it after running every rounds of loops, that current cash becomes pervious cash  
-        print (difference)
+    """
+    lowest = 0
+    day = 0
+    for nested in list:
+        if nested[-1] < lowest: # going down the list to find the lowest value, if the value is lower than the lowest, then it will be replaced to be the lowest
+            lowest = nested[-1]
+            day = nested[0] # updates the day of the lowest
+    return [day, lowest]
 
-# # checking for deficits 
-#         if difference <  0:
-#             # Record the deficit (store the day and the absolute value of the deficit)
-#             deficits.append([day, difference]) 
-#             print (deficits)
+def fluctuate(list):
+    """
+    This function identifies all the deficit days and the top three highest deficits when the data is fluctuating
+    One parameter required: A list where each inner list contains the day and the cash on hand difference for that day.
+
+    """
+    deficits = []    # create empty list to store days with deficits 
+    to_sort = []    # list to sort deficits 
+    for nested in list:
+        if nested[-1] < 0:   # if negative number
+            deficits.append(nested) # if yes, then add the nested number to the end of deficits list 
+            to_sort.append([nested[-1], nested[0]])  # adding of decifics amount and day to the list to sort later 
+        # putting deficit amount first, to sort, will sort the first element first to tell which the highest
+    to_sort.sort()    # to sort the data by ascending order by the deficit amount, to know the largest decifit amount 
+    first = [to_sort[0][-1], to_sort[0][0]] # the first to_sort will be the largest (most negative) deficit amount, then put it into the new list
+    second = [to_sort[1][-1], to_sort[1][0]] # Take the 2nd 
+    third = [to_sort[2][-1], to_sort[2][0]]
+    return deficits, first, second, third
+
+
+# Gobal scope is outside the function, so it will be the same through out, but once the variable is inside a local scope, the variable will not be able to run after the print, it does not exist anymore.   
+def cash_on_hand_function():
+    """
+    This function combines the use of the functions listed above to processes cash on hand data from the cash on hand csv file, determind the trend of the data (increasing, decreasing, fluctuating), 
+    and accordingly executes one of the 3 functions according to the trend and writes the results into the summary text file.
+
+    No parameter needed
+    
+    """
+    # Using the function with the file path
+    fp = Path.cwd() / "csv_reports" / "Cash_on_Hand.csv"
+
+    # read the csv file.
+    with fp.open(mode="r", encoding="UTF-8", newline="") as file:
+        reader = csv.reader(file)
+        next(reader) # skip header
+
+        # create an empty list 
+        data=[] 
+
+        # append the 2 rows of cash on hand values into the data 
+        for row in reader:
+            data.append([row[0], row[-1]])  
+    # create a empty list to store all the cash on hand difference values
+    difference = []
+    # variable prev_day is allocated to values in the first item in the first bracket in the list
+    prev_day = data[0]
+    # creating a for loop for all the days in the data list 
+    for day in range(1, len(data)):
+        profit_diff = int(data[day][-1]) - int(prev_day[-1]) # calculate the difference of cash on hand 
+        difference.append([data[day][0], profit_diff]) # append these difference values into the difference list 
+        prev_day = [data[day][0], data[day][-1]] # allocating the previous day as the current day for the next cycle of the for loop
+
+    # calling the check_list function to run the check on the difference datas in the difference list
+    result = check_list(difference)
+
+    #file path to txt file
+    fp = Path.cwd()/"summary_report.txt"
+    #creating txt file
+    fp.touch()
+    #opening the summary text file and set it to append mode
+    with fp.open(mode="a", encoding="UTF-8", newline="") as file:
+
+        # based on the result determined by the check_list function it will run either of the 3 codes based on the trend identified (increasing, decreasing and fluctuating trend) in the check_list function
+        # if the trend of the cash on hand data is increasing then the always positive function would run and write the highest increase into the summary text file
+        if result == "always increasing":
+            highest = always_positive(difference)
+            file.write(f'[CASH SURPLUS] CASH ON EACH DAY IS HIGHER THAN PREVIOUS DAY\n[HIGHEST CASH SURPLUS] DAY {highest[0]}, AMOUNT: SGD{highest[-1]}')
+            # if the trend of the cash on hand data is decreasing then the always negative function would run and write the highest deficit into the summary text file
+        elif result == "always decreasing":
+            lowest = always_negative(difference)
+            file.write(f'[CASH DEFICIT] CASH ON EACH DAY IS LOWER THAN PREVIOUS DAY\n[HIGHEST CASH DECIFIT] DAY {lowest[0]}, AMOUNT: SGD{lowest[-1]*-1}')
+            # if the trend of the cash on hand data is fluctuating then the fluctuate function would run and write all the deficits and also the top 3 deficits into the summary text file
+        elif result == "fluctuating": 
+            deficits, first, second, third = fluctuate(difference)
+            for deficit in deficits:
+                file.write(f'\n[CASH DEFICIT] DAY {deficit[0]}, AMOUNT: SGD{deficit[-1]*-1}')
+            file.write(f'\n[HIGHEST CASH DEFICIT] DAY {first[0]}, AMOUNT: SGD{first[-1]*-1}\n[2ND HIGHEST CASH DEFICIT] DAY {second[0]}, AMOUNT: SGD{second[-1]*-1}\n[3RD HIGHEST CASH DEFICIT] DAY {third[0]}, AMOUNT: SGD{third[-1]*-1}')
